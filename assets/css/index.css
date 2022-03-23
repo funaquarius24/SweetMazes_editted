@@ -1,0 +1,101 @@
+:root {
+  --theme-color: #BA6868;
+}
+
+body {
+  background-color: #EEEEEE;
+  font-family: sans-serif;
+  margin: 0;
+}
+
+main {
+  display: flex;
+  background-color: #FAFAFA;
+  justify-content: left;
+}
+
+#display {
+  margin: 1rem;
+}
+
+#controls {
+  color: #222;
+  width: 28rem;
+  flex-grow: 0;
+  overflow-y: scroll;
+}
+
+.group {
+  background-color: #EEEEEE;
+  padding: 2rem;
+  margin: 1rem;
+  border-radius: 0.2rem;
+  filter: drop-shadow(1px 2px 2px #777);
+}
+
+.group > h1 {
+  margin-top: 0;
+}
+
+.group > section {
+  margin-bottom: 1rem;
+}
+
+.group > button {
+  margin: 0.5rem;  
+}
+
+button {
+  background-color: var(--theme-color);
+  border: none;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  transition: 0.1s;
+  filter: drop-shadow(1px 2px 2px #777);
+}
+
+button:hover {
+  filter: brightness(110%) drop-shadow(1px 2px 2px #777);
+}
+
+button:active {
+  filter: brightness(90%);
+  transform: translateX(2px) translateY(2px);
+  transition: 0.1s;
+}
+
+input, select {
+  border: 0.15rem solid #222;
+  border-radius: 0.2rem;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-row-gap: 0.5rem;
+}
+
+@media (pointer:none), (pointer:coarse) {
+  body {
+    font-size: 2rem;
+  }
+  
+  main {
+    flex-direction: column;
+  }
+  
+  #controls {
+    width: 100%;
+  }
+  
+  button {
+    font-size: 2rem;
+    padding: 1rem;
+  }
+  
+  input, select {
+    font-size: 2rem;
+  }
+}

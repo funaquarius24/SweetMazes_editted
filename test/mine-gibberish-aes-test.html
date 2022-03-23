@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/mdb.min.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <script type="text/javascript" src="jmdb.js"></script>
+    <script type="text/javascript" src="jquery-1.2.6.js"></script>
+    <script type="text/javascript" src="../dist/gibberish-aes-1.0.0.min.js"></script>
+    <script type="text/javascript" src="gibberish-aes-test.js"></script>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+</head>
+<body>
+ <div id="container-fluid">
+    <div class="jumbotron jumbotron-fluid">
+        <h1 class="display-4">Hello, world!</h1>
+        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+        <hr class="my-4">
+    </div>
+  
+  <h1>OpenSSL Compatibility</h1>
+  <h2>Encryption</h2>
+  <ul>
+  <li id="oe128">128 Bit:</li>
+  <li id="oe192">192 Bit:</li>
+  <li id="oe256">256 Bit:</li>
+  </ul>
+  
+  <h2>Decryption</h2>
+  <ul>
+  <li id="od128">128 Bit: </li>
+  <li id="od192">192 Bit: </li>
+  <li id="od256">256 Bit: </li>
+  </ul>
+  <p>State: <input type="text" className="form-control short-text-input-60" name="state" onChange={handleChange} /></p>
+          <p>District: <input type="text" className="form-control short-text-input-60" name="district"  onChange={handleChange} /></p>
+          <p>Cadzone: <input type="text" className="form-control short-text-input-60" name="cadzone"  onChange={handleChange} /></p>
+          <p>Plot Number: <input type="text" className="form-control short-text-input-60" name="plotNumber" onChange={handleChange} /></p>
+          <p>Plot Size: <input type="text" className="form-control short-text-input-80" name="plotSize" onChange={handleChange} /></p>
+          <p>Owner: <input type="text" className="form-control short-text-input-60" name="owner" placeholder={"owner wallet address"} onChange={handleChange} /></p>
+          <p>Email:  <input type="text" className="form-control short-text-input-60" name="email"  onChange={handleChange} /></p>
+    
+    <form>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+ </div>
+</body>
+</html>
