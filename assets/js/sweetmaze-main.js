@@ -10,12 +10,15 @@ const GRID_TYPES = {
 let maze = null;
 let mazes = [] // For creating multiple mazes
 let previewContext = document.getElementById('display').getContext('2d');
+var num_mazes = 1;
+
+let internal_preview_context = document.createElement("canvas").getContext('2d')
 
 let nextGeneratorStep = Date.now();
 
 function createMaze() {
   const seed = Number(document.getElementById('param-seed').value);
-  const num_mazes = Number(document.getElementById('param-num-mazes').value);
+  num_mazes = Number(document.getElementById('param-num-mazes').value);
   const width = Number(document.getElementById('param-width').value);
   const height = Number(document.getElementById('param-height').value);
 
@@ -27,29 +30,11 @@ function createMaze() {
     previewContext.canvas.width = CANVAS_SIZE * width / height;
   }
 
-  if(num_mazes > 1){
-    mazes = []
-    for(var i = 0; i < num_mazes; i++){
-      maze = new Maze(
-        GRID_TYPES[document.getElementById('param-grid').value](width, height),
-        seed,
-        document.getElementById('param-backtrack-method').value.toLowerCase()
-      );
-    
-      maze.bridgeChance = document.getElementById('param-bridge-chance').value;
-      maze.turningProbability = document.getElementById(
-        'param-turn-probability'
-      ).value;
-      mazes[i] = maze;
-    }
-
-    console.log(mazes.length);
-
-  }
-  else{
+  mazes = []
+  for(var i = 0; i < num_mazes; i++){
     maze = new Maze(
       GRID_TYPES[document.getElementById('param-grid').value](width, height),
-      seed,
+      seed + i,
       document.getElementById('param-backtrack-method').value.toLowerCase()
     );
   
@@ -57,8 +42,12 @@ function createMaze() {
     maze.turningProbability = document.getElementById(
       'param-turn-probability'
     ).value;
+    mazes[i] = maze;
   }
 
+  console.log(mazes.length);
+
+  
   
 }
 
@@ -151,6 +140,29 @@ document.getElementById('reseed-now').addEventListener('click', () => {
   drawMaze(previewContext);
 });
 
+const te = function (canvasContext, download_string){
+  
+  div = document.createElement("div")
+  div.appendChild(canvasContext.getSVG());
+  let str = div.innerHTML;
+  let newstr = str.replace(/<svg/i, '<svg  xmlns="http://www.w3.org/2000/svg" ');
+ var file = new Blob([newstr], {type: 'text/svg;'});
+  if (window.navigator.msSaveOrOpenBlob) // IE10+
+      window.navigator.msSaveOrOpenBlob(file, `${download_string}.svg`);
+  else { // Others
+      var a = document.createElement("a"),
+      url = URL.createObjectURL(file);
+      a.href = url;
+      a.download = `${download_string}.svg`;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);  
+      }, 0); 
+  }
+}
+
 document.getElementById('render').addEventListener('click', () => {
   const pixelsPerCell = document.getElementById('render-param-pixels-per-cell')
     .value;
@@ -160,58 +172,44 @@ document.getElementById('render').addEventListener('click', () => {
   canvasSVGContext.wrapCanvas(canvas);
 
   var canvasContext = canvas.getContext("2d");
+  const a = document.createElement('a');
 
   var aa = canvasContext.getSVG()
 
   try {
-    document.body.appendChild(canvas);
+    for( var i = 0; i < num_mazes; i++ ){
+      document.body.appendChild(canvas);
 
-    const renderContext = canvas.getContext('2d');
+      const renderContext = canvas.getContext('2d');
 
-    canvas.width = pixelsPerCell * maze.grid.width;
-    canvas.height = pixelsPerCell * maze.grid.height;
+      canvas.width = pixelsPerCell * maze.grid.width;
+      canvas.height = pixelsPerCell * maze.grid.height;
 
-    if (maze.currentCell != null) {
-      maze.generate();
-      drawMaze(previewContext);
-    }
-    drawMaze(renderContext);
+      maze = mazes[i]
 
-    const seed = Number(document.getElementById('param-seed').value);
-    const width = Number(document.getElementById('param-width').value);
-    const height = Number(document.getElementById('param-height').value);
-
-    const a = document.createElement('a');
-    a.download = `maze_${width}x${height}_${seed}`;
-    // a.href = canvas.toDataURL();
-    console.log(canvasContext.getSVG());
-
-    const te = function (){
-      div = document.createElement("div")
-      div.appendChild(canvasContext.getSVG());
-      let str = div.innerHTML;
-      let newstr = str.replace(/<svg/i, '<svg  xmlns="http://www.w3.org/2000/svg" ');
-     var file = new Blob([newstr], {type: 'text/svg;'});
-      if (window.navigator.msSaveOrOpenBlob) // IE10+
-          window.navigator.msSaveOrOpenBlob(file, "export.svg");
-      else { // Others
-          var a = document.createElement("a"),
-          url = URL.createObjectURL(file);
-          a.href = url;
-          a.download = "export.svg";
-          document.body.appendChild(a);
-          a.click();
-          setTimeout(function() {
-              document.body.removeChild(a);
-              window.URL.revokeObjectURL(url);  
-          }, 0); 
+      if (maze.currentCell != null) {
+        maze.generate();
+        drawMaze(previewContext);
       }
-  }
-    // a.href = canvasContext.getSVG();
-    // div = document.createElement("div")
-    // div.appendChild(canvasContext.getSVG());
-    // a.href = "data:text/html," + div.innerHTML; ;
-    te();
+      drawMaze(renderContext);
+
+      const seed = Number(document.getElementById('param-seed').value);
+      const width = Number(document.getElementById('param-width').value);
+      const height = Number(document.getElementById('param-height').value);
+
+      
+      a.download = `sweetmaze-${i}_${width}x${height}_${seed + i}`;
+      // a.href = canvas.toDataURL();
+      console.log(canvasContext.getSVG());
+
+      
+      // a.href = canvasContext.getSVG();
+      // div = document.createElement("div")
+      // div.appendChild(canvasContext.getSVG());
+      // a.href = "data:text/html," + div.innerHTML; ;
+      te(canvasContext, a.download);
+    }
+    
     try {
       document.body.appendChild(a);
       a.click();
@@ -221,6 +219,8 @@ document.getElementById('render').addEventListener('click', () => {
   } finally {
     document.body.removeChild(canvas);
   }
+
+  
 });
 
 window.addEventListener('load', () => {
